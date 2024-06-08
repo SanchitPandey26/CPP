@@ -8,16 +8,13 @@ int main(){
     for (int i = 0; i < n; i++){
         cin >> arr[i];
     }
-    int j = 0;
+    int temp = arr[0];
     for (int i = 1; i < n; i++){
-        if (arr[j] != arr[i]){
-                j++;
-                arr[j] = arr[i];
-        }
+        arr[i-1] = arr[i];
     }
-    cout << j + 1 <<  endl;
+    arr[n-1] = temp;
 
-    for (int i = 0; i < j + 1; i++){
+    for (int i = 0; i < n; i++){
         cout << arr[i] << ' ';
     }
 }
