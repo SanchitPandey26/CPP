@@ -34,6 +34,16 @@ void printLL(Node* head){
     cout << endl;
 }
 
+Node* middle(Node* head){
+    Node* slow = head;
+    Node* fast = head;
+    while (fast && fast->next){
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;
+}
+
 int main(){
     int n;
     cin >> n;
@@ -43,5 +53,5 @@ int main(){
     }
 
     Node* head = convertArr2LL(arr,n);
-    printLL(head);
+    cout << middle(head)->data << endl;
 }
