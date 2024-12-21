@@ -34,36 +34,34 @@ void printLL(Node* head){
     cout << endl;
 }
 
-Node* reverseLL(Node* head){
-    if (head == NULL || head->next == NULL) return head;
-    Node* newHead = reverseLL(head->next);
-    Node* front = head->next;
-    front->next = head;
-    head->next = nullptr;
-    return newHead;
-}
+Node* oddEvenList(Node* head) {
+        if (head == NULL || head->next == NULL) return head;
+        Node* oddHead = new Node(-1);
+        Node* evenHead = new Node(-1);
+        Node* evenTail = evenHead;
+        Node* oddTail = oddHead;
+        Node* temp = NULL;
+        Node* curr = head;
+        int count = 0;
+        while (curr){
+            temp = curr;
+            curr = curr->next;
+            temp->next = nullptr;
+            count++;
+            if (count & 1){
+                oddTail->next = temp;
+                oddTail = temp;
+            }
+            else{
+                evenTail->next = temp;
+                evenTail = temp;
+            }
+            temp = temp->next;
 
-int pallindrome(Node* head){
-    Node* fast = head;
-    Node* slow = head;
-    while(fast->next->next && fast->next){
-        slow = slow->next;
-        fast = fast->next->next;
-    }
-    Node* newHead = reverseLL(slow->next);
-    Node* first = head;
-    Node* second = newHead;
-    while (second){
-        if (first->data != second->data){
-            reverseLL(newHead);
-            return false;
         }
-        first = first->next;
-        second = second->next;
+        oddTail->next = evenHead->next;
+        return oddHead->next;
     }
-    reverseLL(newHead);
-    return true;
-}
 
 int main(){
     int n;
@@ -74,5 +72,5 @@ int main(){
     }
 
     Node* head = convertArr2LL(arr,n);
-    cout << pallindrome(head);
+    cout << oddEvenList(head);
 }
