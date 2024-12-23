@@ -37,32 +37,29 @@ void printDll(Node* head){
     cout << endl;
 }
 
-Node* deleteAllOccurOfX(Node* head, int x){
-    if (head == NULL) return head;
-    Node* curr = head;
-    while (curr){
-        if (curr->data == x){
-            if (head == curr) head = curr->next;
-            Node* nextNode = curr->next;
-            Node* prevNode = curr->back;
-            if (prevNode) prevNode->next = prevNode;
-            if (nextNode) nextNode->back = nextNode;
-            free(curr);
-            curr = nextNode;
+Node* removeDuplicates(Node* head){
+    Node* temp = head;
+    while (temp && temp->next){
+        Node* nextNode = temp->next;
+        while (nextNode && temp->data == nextNode->data){
+            Node* duplicate = nextNode;
+            nextNode = nextNode->next;
+            free(duplicate);
         }
-        else curr = curr->next;
+        temp->next = nextNode;
+        if (nextNode) nextNode->back = temp;
+        temp = temp->next;
     }
     return head;
 }
 
 int main(){
-    int n, x;
+    int n;
     cin >> n;
     int arr[n];
     for (int i = 0; i < n; i++){
         cin >> arr[i];
     }
-    cin >> x;
     Node* head = converArr2Dll(arr, n);
-    head = deleteAllOccurOfX(head, x);
+    Node* head = removeDuplicates(head);
 }

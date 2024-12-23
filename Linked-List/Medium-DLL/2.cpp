@@ -37,22 +37,22 @@ void printDll(Node* head){
     cout << endl;
 }
 
-Node* deleteAllOccurOfX(Node* head, int x){
-    if (head == NULL) return head;
-    Node* curr = head;
-    while (curr){
-        if (curr->data == x){
-            if (head == curr) head = curr->next;
-            Node* nextNode = curr->next;
-            Node* prevNode = curr->back;
-            if (prevNode) prevNode->next = prevNode;
-            if (nextNode) nextNode->back = nextNode;
-            free(curr);
-            curr = nextNode;
+vector<pair<int,int>> findPairsWithGivenSum(Node* head, int x){
+    vector<pair<int,int>> ans;
+    Node* right = head;
+    while (right->next) right = right->next;
+    Node* left = head;
+    while(left->data < right->data){
+        int sum = left->data + right->data;
+        if (sum == x){
+            ans.push_back({left->data, right->data});
+            left = left->next;
+            right = right->back;
         }
-        else curr = curr->next;
+        else if (sum > x) right = right->back;
+        else left = left->next;
     }
-    return head;
+    return ans;
 }
 
 int main(){
@@ -64,5 +64,5 @@ int main(){
     }
     cin >> x;
     Node* head = converArr2Dll(arr, n);
-    head = deleteAllOccurOfX(head, x);
+    vector<pair<int,int>> ans = findPairsWithGivenSum(head, x);
 }
