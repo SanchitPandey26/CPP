@@ -23,12 +23,22 @@ int largestRectangleArea(vector<int>& arr) {
     return area;
 }
 
-int main(){
-    int n;
-    cin >> n;
-    vector<int> arr(n);
-    for (int i = 0; i < n; i++){
-        cin >> arr[i];
+int maximalRectangle(vector<vector<char>>& arr) {
+    int n = arr.size();
+    int m = arr[0].size();
+    vector<int> psum(m, 0);
+
+    int area = 0;
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            psum[j] = (arr[i][j] == '1') ? psum[j] + 1 : 0;
+        }
+        area = max(area, largestRectangleArea(psum));
     }
-    cout << largestRectangleArea(arr);
+
+    return area;
+}
+
+int main(){
 }
