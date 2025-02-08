@@ -1,29 +1,49 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-void dfs(int node, vector<vector<int>> &adj, vector<int>& vis){
-    vis[node] = 1;
-
-    for (int i = 0; i < adj.size(); i++){
-        if (!vis[i] && adj[node][i] == 1){
-            dfs(i, adj, vis);
-        }
-    }
-}
-
-int findCircleNum(vector<vector<int>>& adj) {
+int orangesRotting(vector<vector<int>>& adj) {
     int n = adj.size();
-    vector<int> vis(n,0);
-    int count = 0;
+    int m = adj[0].size();
 
+    // {{r,c},t}
+    queue<pair<pair<int,int>,int>> q;
+    int vis[n][m];
+    int cntFresh = 0;
     for (int i = 0; i < n; i++){
-        if (!vis[i]){
-            count++;
-
-            dfs(i, adj, vis);
+        for(int j = 0; j < m; j++){
+            if (adj[i][j] == 2){
+                q.push({{i,j}, 0});
+                vis[i][j] = 2;
+            }
+            else vis[i][j] = 0;
+            if (adj[i][j] == 1) cntFresh++;
         }
     }
-    return count;
+
+    int time = 0;
+    int drow[] = {-1,0,1,0};
+    int dcol[] = {0,1,0,-1};
+    int cnt = 0;
+    while (!q.empty()){
+        int r = q.front().first.first;
+        int c = q.front().first.second;
+        int t = q.front().second;
+        time = max(time, t);
+        q.pop();
+        for (int i = 0; i < 4; i++){
+            int nrow = r + drow[i];
+            int ncol = c + dcol[i];
+            if (nrow >= 0 && nrow < n && ncol >= 0 && ncol < m 
+                && vis[nrow][ncol] == 0 && adj[nrow][ncol] == 1){
+                vis[nrow][ncol] = 2;
+                q.push({{nrow,ncol}, t+1});
+                cnt++;
+            }
+        }
+    }
+
+    if (cnt != cntFresh) return -1;
+    return time;
 }
 
 int main(){
@@ -34,5 +54,5 @@ int main(){
         {0, 1, 1}
     };
 
-    cout << findCircleNum(adj);
+    cout << orangesRotting(adj);
 }
